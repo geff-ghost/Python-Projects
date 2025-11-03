@@ -29,7 +29,7 @@ def guess(range_input, user_guess):
         
     
 
-play = input('Do you want to play: ')
+play = input('Do you want to play: ').lower()
 if play != 'yes':
     quit()
 else:
