@@ -1,4 +1,4 @@
-
+MAX_HASH_TABLE = 4089
 phone_numbers = {
     "Alice": "555-1234",
     "Bob": "555-5678",
@@ -8,26 +8,41 @@ phone_numbers = {
     'Siddhanth': '555-0002',
 }
 
-data_list = [None] * 4089
-
-def get_index(data_list, a_string):
-    result = 0
-    for char in a_string:
-        a_number = ord(char)
-        result += a_number
-    return result % len(data_list)
 
 
-for name, number in phone_numbers.items():
-    index = get_index(data_list, name)
-    data_list[index] = (name, number)
-    print(f"Stored ({name}, {number}) at index {index}")
+class BasicHashTable:
+    def __init__(self, max_size=MAX_HASH_TABLE):
+        self.data_list = [None] * max_size
+        
+    def insert(self, key, value):
+        idx = BasicHashTable.get_index(self.data_list, key)
+        self.data_list[idx] = key, value
+    
+    def find(self, key):
+        idx = BasicHashTable.get_index(self.data_list, key)
+        kv = self.data_list[idx]
+        
+        if kv is None:
+            return None
+        else:
+            key, value = kv
+            return value
+    
+    def update(self, key, value):
+        idx = BasicHashTable.get_index(self.data_list, key)
+        
+        self.data_list[idx] = key, value
+    
+    @staticmethod
+    def get_index(data_list, a_string):
+        result = 0
+        for char in a_string:
+            a_number = ord(char)
+            result += a_number
+        return result % len(data_list)
 
-print("\nRetrieving values from the hash table:")
-key, value = data_list[get_index(data_list, 'Alice')]
-print(f"Retrieved ({key}, {value}) for 'Alice'")
 
-print("\nAll keys in the hash table:")
-keys = [kv[0] for kv in data_list if kv is not None]
-print("All keys :", keys)
+basic_table = BasicHashTable()
 
+for key, value in phone_numbers.items():
+    basic_table.insert(key, value)
